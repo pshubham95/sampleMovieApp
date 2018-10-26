@@ -1,0 +1,90 @@
+<div [hidden]="!isLoading" class="overlay_div">
+  <div class="center_spinner">
+    <mat-spinner></mat-spinner>
+  </div>
+</div>
+<div>
+  <div class="margin-2x">
+    <form class="margin-left-4x " *ngIf="isGlobalSearch">
+      <mat-form-field class="width-100">
+        <div fxLayout='row' class="height-100">
+          <div fxFlex="95">
+            <input type="text" placeholder="Search Movies.." aria-label="Number" (ngModelChange)="updateFilter()"
+              matInput [formControl]="myControl" [matAutocomplete]="auto">
+          </div>
+          <div [hidden]="!isLoadingSearch">
+            <mat-spinner [diameter]="30" strokeWidth="3"></mat-spinner>
+          </div>
+        </div>
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option (click)="selectMovie(option.id)" class="height-auto" *ngFor="let option of searchOpts()" [value]="option.title">
+            <div fxLayout='row' class="height-100">
+              <div fxFlex="10">
+                <img onError="this.src = 'https://cdn.browshot.com/static/images/not-found.png'" src="https://image.tmdb.org/t/p/w200{{option.poster_path}}"
+                  style="max-width:100%; max-height:100%" />
+              </div>
+              <div class="margin-left-4x" fxFlexAlign="center">
+                {{option.title}} -<small>({{option.release_date}})</small>
+              </div>
+            </div>
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </form>
+    <div class="margin-bottom-4x">
+      <button (click)="navHome()" mat-icon-button *ngIf="!isGlobalSearch">
+        <mat-icon>arrow_back_ios</mat-icon>
+        Back to home
+      </button>
+    </div>
+    <mat-form-field class="width-100" *ngIf="!isGlobalSearch">
+      <input matInput placeholder="Search.." [ngModel]="searchFav" (ngModelChange)="searchUpdateFav($event)">
+    </mat-form-field>
+    <div fxLayout="row" class="margin-2x" fxLayout.xs="column" fxLayout.sm="column" *ngFor="let movie of movies; index as i">
+      <div fxFlex="50" class="margin-2x flexDisplay" *ngFor="let item of movie; index as j">
+        <mat-card>
+          <div fxLayout='row' class="height-100">
+            <div fxFlex="33">
+              <img onError="this.src = 'https://cdn.browshot.com/static/images/not-found.png'" class="adapt-image" src="https://image.tmdb.org/t/p/w300{{item.poster_path}}" />
+            </div>
+            <div fxFlex>
+              <div fxLayout="column" class="height-100">
+                <div fxFlex="80">
+                  <div fxLayout='row'>
+                    <div fxFlex="80">
+                      <mat-card-header>
+                        <mat-card-title class="link" (click)="selectMovie(item.id)">
+                          {{item.original_title}}
+                        </mat-card-title>
+                        <mat-card-subtitle>{{item.release_date}}</mat-card-subtitle>
+                      </mat-card-header>
+                    </div>
+                    <div>
+                      <button mat-icon-button class="not-allowed">
+                        <mat-icon aria-label="Example icon-button with a heart icon">thumb_up</mat-icon>
+                        {{item.vote_average * 10}} %
+                      </button>
+                    </div>
+                  </div>
+                  <mat-card-content>
+                    <p>
+                      {{item.overview}}
+                    </p>
+                  </mat-card-content>
+                </div>
+                <div fxFlex="20" class="margin-left-4x">
+                  <mat-card-actions class="margin-left-0x">
+                    <button ng-init mat-icon-button color="accent" (click)="setFav(item.id, item.isFav, i, j, item.title)">
+                      <mat-icon aria-label="fav icon">
+                        {{item.isFav ? 'favorite' : 'favorite_border'}}
+                      </mat-icon>
+                    </button>
+                  </mat-card-actions>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </div>

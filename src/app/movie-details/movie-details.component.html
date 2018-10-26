@@ -1,0 +1,164 @@
+<div [hidden]="!isLoading" class="overlay_div">
+  <div class="center_spinner">
+    <mat-spinner></mat-spinner>
+  </div>
+</div>
+<div class="margin-4x">
+  <div class="margin-bottom-4x">
+    <button (click)="navHome()" mat-icon-button>
+      <mat-icon>arrow_back_ios</mat-icon>
+      Back to home
+    </button>
+  </div>
+  <div fxLayout='column' class="height-100" *ngIf="movieDetails.title">
+    <mat-card>
+      <div fxLayout="row" fxLayout.xs="column" class="height-100">
+        <div fxFlex="20">
+          <img onError="this.src = 'https://www.lifewire.com/thmb/OO7CD06NAdoIwv71DgUgBiTd4ps=/768x0/filters:no_upscale():max_bytes(150000):strip_icc()/shutterstock_325494917-5a68d8403418c600190a3e1f.jpg'"
+            src="https://image.tmdb.org/t/p/w200{{movieDetails.poster_path}}" class="adapt-image" />
+        </div>
+        <div fxFlex>
+          <div fxLayout="row">
+            <div fxFlex="80" fxFlexAlign="center">
+              <mat-card-header>
+                <mat-card-title>{{movieDetails.title}} - <small>{{movieDetails.release_date}}</small></mat-card-title>
+                <mat-card-subtitle>{{movieDetails.tagline}}</mat-card-subtitle>
+
+              </mat-card-header>
+            </div>
+            <div>
+              <div fxLayout="column" *ngIf="movieDetails.vote_average > 0">
+                <div>
+                  <rg-gauge-chart canvasWidth="150" [needleValue]="movieDetails.vote_average * 10" [centralLabel]="(movieDetails.vote_average * 10).toString()"
+                    [options]="getOptions()"></rg-gauge-chart>
+                </div>
+                <div fxFlexAlign="center">
+                  <small>Popularity Score</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <mat-card-content class="margin-left-4x margin-top-8x">
+            <div>
+              <mat-chip-list>
+                <mat-chip *ngFor="let item of movieDetails.genres">
+                  {{item.name}}
+                </mat-chip>
+              </mat-chip-list>
+            </div>
+            <div fxLayout="row" class="margin-top-2x" >
+              <a type="button" target="_blank" href="https://facebook.com/{{externalIds.facebook_id}}" *ngIf="externalIds.facebook_id"
+                mat-icon-button matTooltip="Visit Facebook">
+                <mat-icon fontSet="fontawesome">
+                  <i class="fab fa-lg fa-facebook-square"></i>
+                </mat-icon>
+              </a>
+              <a type="button" target="_blank" href="https://instagram.com/{{externalIds.instagram_id}}" *ngIf="externalIds.instagram_id"
+                mat-icon-button matTooltip="Visit Instagram">
+                <mat-icon fontSet="fontawesome">
+                  <i class="fab fa-lg fa-instagram"></i>
+                </mat-icon>
+              </a>
+              <a type="button" target="_blank" href="https://twitter.com/{{externalIds.twitter_id}}" *ngIf="externalIds.twitter_id"
+                mat-icon-button matTooltip="Visit Twitter">
+                <mat-icon fontSet="fontawesome">
+                  <i class="fab fa-lg fa-twitter"></i>
+                </mat-icon>
+              </a>
+              <a type="button" target="_blank" href="https://imdb.com/{{externalIds.imdb_id}}" *ngIf="externalIds.imdb_id"
+                mat-icon-button matTooltip="Visit IMDB">
+                <mat-icon fontSet="fontawesome">
+                  <i class="fab fa-lg fa-imdb"></i>
+                </mat-icon>
+              </a>
+              <a type="button" target="_blank" href="https://youtube.com/watch?v={{externalIds.trailer ? externalIds.trailer.key : ''}}"
+                *ngIf="externalIds.trailer" mat-icon-button matTooltip="Watch Trailer">
+                <mat-icon fontSet="fontawesome">
+                  <i class="fab fa-lg fa-youtube"></i>
+                </mat-icon>
+              </a>
+              <button matTooltip="{{movieDetails.isFav ? 'Remove favorite' : 'Add favorite'}}" ng-init mat-icon-button
+                color="accent" (click)="setFav(movieDetails.id, movieDetails.isFav)">
+                <mat-icon aria-label="fav icon">
+                  {{movieDetails.isFav ? 'favorite' : 'favorite_border'}}
+                </mat-icon>
+              </button>
+            </div>
+            <p>
+              {{movieDetails.overview}}
+            </p>
+          </mat-card-content>
+        </div>
+      </div>
+
+    </mat-card>
+    <mat-card  class="margin-top-4x">
+      <mat-card-header>
+        <mat-card-title>
+          Featured Cast
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div fxLayout="row" fxLayout.xs="column" class="height-100">
+          <div *ngFor="let item of cast" class="margin-right-1x flexDisplay">
+            <mat-card style="margin-top: 8px; flex: 1;">
+              <div fxLayout="column" fxLayout.xs="row" class="flexDisplay minCardHeight" >
+                <div fxFlex.xs="33" fxFlex="70">
+                  <img onError="this.src = 'https://cdn.browshot.com/static/images/not-found.png'" src="https://image.tmdb.org/t/p/w200{{item.profile_path}}"
+                    class="adapt-image" />
+                </div>
+                <div fxFlex.xs="66" fxFlex="30" fxFlexAlign.xs="center" fxFlexOffset.xs="16px">
+                  <mat-card-content>
+                    <h4>{{item.name}}</h4>
+                    <small>{{item.character}}</small>
+                  </mat-card-content>
+                </div>
+              </div>
+            </mat-card>
+
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="margin-top-4x">
+      <mat-card-header>
+        <mat-card-title>
+          Recommendations
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div fxLayout="row" fxLayout.xs="column" class="height-100">
+          <div *ngIf="recommendations.length === 0">
+            <button mat-icon-button>
+              <mat-icon>error</mat-icon>
+              Unable to find recommendations
+            </button>
+          </div>
+          <div fxFlex *ngFor="let item of recommendations" class="margin-right-2x flexDisplay" >
+            <mat-card (click)="navigateToMovie(item.id)" class="margin-top-2x flexDisplayStretch pointer">
+              <div fxLayout="column" fxLayout.xs="row" class="flexDisplay minCardHeight" >
+                <div fxFlex.xs="33" fxFlex="70">
+                  <img onError="this.src = 'https://cdn.browshot.com/static/images/not-found.png'" src="https://image.tmdb.org/t/p/w200{{item.poster_path}}"
+                    class="adapt-image" />
+                </div>
+                <div fxFlex.xs="66" fxFlex="30" fxFlexAlign.xs="center" fxFlexOffset.xs="16px">
+                  <mat-card-content>
+                    <h4>{{item.title}}</h4>
+                    <mat-chip-list>
+                      <mat-chip *ngFor="let genre of item.genre_ids">
+                        {{getGenre(genre)}}
+                      </mat-chip>
+                    </mat-chip-list>
+                  </mat-card-content>
+                </div>
+              </div>
+            </mat-card>
+
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+</div>
