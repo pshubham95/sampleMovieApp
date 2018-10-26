@@ -23,8 +23,14 @@ export class FavMoviesComponent implements OnInit {
     this.router.navigate(['/home']);
   }
 
+  flatten(list) {
+    return list.reduce(
+      (a, b) => a.concat(Array.isArray(b) ? this.flatten(b) : b), []
+    );
+  }
+
   public searchUpdateFav(val) {
-    const flatMovies = [].concat.apply(...this.origMovies);
+    const flatMovies = this.flatten(this.origMovies);
     this.movies = this.movieService.getChunkedArray(
       flatMovies.filter(e => e.title.toLowerCase().indexOf(val.toLowerCase()) > -1)
     );
@@ -33,7 +39,7 @@ export class FavMoviesComponent implements OnInit {
   public selectMovie(id) {
     this.router.navigate(['/movieDetails', id]);
   }
-  
+
   ngOnInit() {
     this.isLoading = true;
     this.movieService.getFavMovies().then(res => {

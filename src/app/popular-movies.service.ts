@@ -3,8 +3,6 @@ import { Http, Response, Headers, RequestOptions, URLSearchParams } from '@angul
 import 'rxjs/Rx';
 import 'rxjs/add/operator/toPromise';
 import { config } from '../conf/apiEndpointConfig';
-import { from } from 'rxjs';
-import { resolve } from 'dns';
 import { MatSnackBar } from '@angular/material';
 @Injectable({
   providedIn: 'root'
@@ -69,7 +67,7 @@ export class PopularMoviesService {
     const favItems = JSON.parse(this.getFavItems());
     return Promise.all(
       favItems.map(e => this.getMovie(`movie/${e}`, `movie/${e}`)) 
-    ).then(res => {
+    ).then((res: any) => {
       res.map((_, i) => res[i].isFav = true);
       res = res.sort((a, b) => b.vote_average - a.vote_average);
       return this.getChunkedArray(res);

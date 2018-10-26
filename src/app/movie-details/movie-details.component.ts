@@ -10,7 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class MovieDetailsComponent implements OnInit {
 
   constructor(private movieService: PopularMoviesService, private route: ActivatedRoute, private redirect: Router) { }
-  movieDetails = {};
+  movieDetails : any = {};
   externalIds = {};
   cast = [];
   isLoading = true;

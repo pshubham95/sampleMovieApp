@@ -39,7 +39,7 @@ export class HomeComponentComponent implements OnInit {
     if (value.length > 0) {
       this.isLoadingSearch = true;
       this.movieService
-        .getService(`search/movie?query=${value}`)
+        .getService(`search/movie?query=${value}`, null)
         .then(result => {
           this.isLoadingSearch = false;
           this.searchLookUp[value] = result.results;
