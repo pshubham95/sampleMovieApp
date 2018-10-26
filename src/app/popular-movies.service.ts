@@ -28,7 +28,6 @@ export class PopularMoviesService {
   }
   private cacheData = {};
   private extractData(res: Response, type: string) {
-    console.log(res, type);
     const body = res.json();
     if (type)
       this.cacheData[type] = body;
@@ -45,7 +44,6 @@ export class PopularMoviesService {
     return localStorage.getItem('favItems') || '[]';
   }
   setFavItems(existingFav) {
-    console.log(existingFav);
     const unMutatedExistingFav = Array.from(existingFav);
     localStorage.setItem('favItems', JSON.stringify(unMutatedExistingFav));
   }
@@ -107,7 +105,6 @@ export class PopularMoviesService {
   }
 
   getService(url: string, type: string): Promise<any> {
-    console.log(type);
     if (this.cacheData[type]) {
       return new Promise(resolve => resolve(this.cacheData[type]));
     }

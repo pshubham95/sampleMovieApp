@@ -22,7 +22,7 @@ export class FavMoviesComponent implements OnInit {
   public navHome() {
     this.router.navigate(['/home']);
   }
-  
+
   public searchUpdateFav(val) {
     const flatMovies = [].concat.apply(...this.origMovies);
     this.movies = this.movieService.getChunkedArray(
@@ -31,14 +31,12 @@ export class FavMoviesComponent implements OnInit {
   }
 
   public selectMovie(id) {
-    console.log(id);
     this.router.navigate(['/movieDetails', id]);
   }
   
   ngOnInit() {
     this.isLoading = true;
     this.movieService.getFavMovies().then(res => {
-      console.log(res);
       this.movies = res;
       this.origMovies = [...res];
       this.isLoading = false;

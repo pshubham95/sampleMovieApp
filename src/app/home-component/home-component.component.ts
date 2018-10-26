@@ -28,7 +28,6 @@ export class HomeComponentComponent implements OnInit {
     return this.searchLookUp[value] || [];
   }
   public selectMovie(id) {
-    console.log(id);
     this.router.navigate(['/movieDetails', id]);
   }
 
@@ -42,7 +41,6 @@ export class HomeComponentComponent implements OnInit {
       this.movieService
         .getService(`search/movie?query=${value}`)
         .then(result => {
-          console.log(result);
           this.isLoadingSearch = false;
           this.searchLookUp[value] = result.results;
         });
@@ -50,7 +48,6 @@ export class HomeComponentComponent implements OnInit {
     else {
       this.searchLookUp = {}
     }
-    console.log(this.myControl.value);
   }
 
   ngOnInit() {
@@ -58,9 +55,7 @@ export class HomeComponentComponent implements OnInit {
     this.movieService
       .getHomePageMovies('discover/movie', 'HOME_POPULAR_MOVIES')
       .then(result => {
-        console.log(result);
         this.movies = result;
-        console.log(this.movies);
         this.isLoading = false;
       }).catch(error => console.log(error));
   }

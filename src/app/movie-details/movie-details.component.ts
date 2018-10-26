@@ -81,7 +81,6 @@ export class MovieDetailsComponent implements OnInit {
         this.recommendations = result[4].results.splice(0, 6);
         this.genres = result[5].genres;
         this.isLoading = false;
-        console.log(result, this.externalIds);
       });
     });
   }

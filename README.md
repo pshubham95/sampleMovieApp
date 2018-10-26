@@ -1,3 +1,6 @@
+# About this project
+
+Sample movie app built using themoviedb api - https://www.themoviedb.org/documentation/api
 # SampleMovieApp
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.0.2.
