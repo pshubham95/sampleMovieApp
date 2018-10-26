@@ -5,6 +5,11 @@ Sample movie app built using themoviedb api - https://www.themoviedb.org/documen
 
 ![Screen1](screenshots/s1.png?raw=true "Home Page")
 
+![Screen2](screenshots/s2.png?raw=true "Home Page")
+
+![Screen3](screenshots/s3.png?raw=true "Home Page")
+
+![Screen4](screenshots/s4.png?raw=true "Home Page")
 
 # SampleMovieApp
 
